@@ -1,0 +1,49 @@
+.main {
+  padding: 5rem 2rem;
+}
+.btn {
+  &:disabled {
+    background-color: var(--button-fill-color-disabled);
+    color: var(--button-text-color-disabled);
+  }
+  border-radius: 1rem;
+  position: relative;
+  height: 5rem;
+  border: none;
+  font-weight: bold;
+  outline: none;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--secondary-text-color);
+}
+
+.payment {
+  &-detail {
+    margin-top: 2rem;
+
+    &__list {
+      min-height: 4rem;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      border-top: solid black 1px;
+    }
+    &__name {
+      display: inline-block;
+      width: 30%;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      font-weight: bolder;
+    }
+
+    &__value {
+      border-left: solid 2px;
+      display: inline-block;
+      font-size: 1.5rem;
+      padding-left: 3rem;
+    }
+  }
+}

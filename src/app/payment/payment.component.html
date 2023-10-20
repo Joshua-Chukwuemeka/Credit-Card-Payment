@@ -1,0 +1,195 @@
+<main class="main">
+  <div class="brand">
+    <h1>Credit Card</h1>
+    <h2>Payment</h2>
+  </div>
+  <div class="card">
+    <form
+      class="card--form"
+      [formGroup]="paymentForm"
+      (ngSubmit)="makePayment(paymentForm.value)"
+      class="form--payment"
+    >
+      <div
+        [ngClass]="{
+          error: amount.invalid && (amount.dirty || mouseoverLogin)
+        }"
+        class="form-group"
+      >
+        <em
+          *ngIf="
+            amount.invalid &&
+            amount.errors.required &&
+            (amount.dirty || mouseoverLogin)
+          "
+          >Required:
+        </em>
+        <em
+          *ngIf="
+            amount.invalid && !amount.errors.required && amount.errors.pattern
+          "
+          >Accept only numbers
+        </em>
+        <em
+          *ngIf="
+            amount.invalid &&
+            !amount.errors.required &&
+            !amount.errors.pattern &&
+            amount.errors.invalidateAmount
+          "
+          >Most be greater than zero (0)
+        </em>
+        <input
+          (keypress)="restrictFloat($event)"
+          formControlName="amount"
+          id="amount"
+          type="text"
+          class="form-control"
+          placeholder="Amount"
+        />
+      </div>
+
+      <div
+        class="form-group"
+        [ngClass]="{
+          error: cardNumber.invalid && (cardNumber.dirty || mouseoverLogin)
+        }"
+      >
+        <em
+          *ngIf="
+            cardNumber.invalid &&
+            cardNumber.errors.required &&
+            (cardNumber.dirty || mouseoverLogin)
+          "
+          >Required:
+        </em>
+        <em *ngIf="cardNumber.invalid && cardNumber.errors.pattern"
+          >Most follow this pattern 1234 1234 1234 1234
+        </em>
+        <!-- <em
+        *ngIf="
+          !paymentForm.controls.cardNumber.valid &&
+          paymentForm.controls.cardNumber.errors.pattern
+        "
+        >Most follow this pattern 1234 1234 1234 1234
+      </em> -->
+        <input
+          (keypress)="formatCardNumber($event)"
+          (keypress)="restrictNumber($event)"
+          formControlName="cardNumber"
+          id="cardNumber"
+          type="text"
+          class="form-control"
+          placeholder="1234 1234 1234 1234"
+          maxlength="19"
+        />
+      </div>
+
+      <div
+        class="input-group"
+        [ngClass]="{
+          error: cardExpiry.invalid && (cardExpiry.dirty || mouseoverLogin)
+        }"
+      >
+        <div class="form-group">
+          <em
+            *ngIf="
+              cardExpiry.invalid &&
+              cardExpiry.errors.required &&
+              (cardExpiry.dirty || mouseoverLogin)
+            "
+            >Required:
+          </em>
+          <em *ngIf="cardExpiry.invalid && cardExpiry.errors.invalidDate"
+            >Card date must be greater than todays date
+          </em>
+
+          <em *ngIf="cardExpiry.invalid && cardExpiry.errors.pattern"
+            >Most follow this pattern 01 / 20
+          </em>
+          <input
+            (keypress)="formatCardDate($event)"
+            formControlName="cardExpiry"
+            id="cardExpiry"
+            type="text"
+            class="form-control form-control-left"
+            placeholder="MM / YY"
+            maxlength="7"
+          />
+        </div>
+
+        <div
+          class="form-group"
+          [ngClass]="{
+            error: cardCcv.invalid && (cardCcv.dirty || mouseoverLogin)
+          }"
+        >
+          <em *ngIf="cardCcv.invalid && cardCcv.errors.pattern"
+            >Accept only numbers and must be three digits e.g. 233
+          </em>
+          <input
+            (keypress)="restrictNumber($event)"
+            formControlName="cardCcv"
+            id="cardCcv"
+            type="text"
+            class="form-control form-control-right"
+            placeholder="CCV"
+            maxlength="3"
+          />
+        </div>
+      </div>
+
+      <div
+        class="form-group"
+        [ngClass]="{
+          error: billingName.invalid && (billingName.dirty || mouseoverLogin)
+        }"
+      >
+        <em
+          *ngIf="
+            billingName.invalid &&
+            billingName.errors.required &&
+            (billingName.dirty || mouseoverLogin)
+          "
+          >Required:
+        </em>
+
+        <em *ngIf="billingName.invalid && billingName.errors.pattern"
+          >Enter your name in this format (John Leo)
+        </em>
+        <input
+          formControlName="billingName"
+          id="billingName"
+          type="text"
+          class="form-control"
+          placeholder="Card Name"
+        />
+      </div>
+
+      <span
+        (mouseenter)="mouseoverLogin = true"
+        (mouseleave)="mouseoverLogin = false"
+      >
+        <button
+          [disabled]="paymentForm.invalid"
+          type="submit"
+          class="btn btn-primary"
+        >
+          Pay
+          {{
+            paymentForm.controls.amount.valid
+              ? (0 + paymentForm.value.amount | currency: "USD")
+              : ""
+          }}
+          & Checkout
+        </button>
+      </span>
+    </form>
+  </div>
+</main>
+
+<!-- a. Credit Card Number (mandatory, string)
+b. Card Holder (mandatory, string)
+c. Expiration Date (mandatory, Date, >CurrentDate)
+d. Security Code - CCV (optional, string, 3 digits)
+e. Amount (mandatory, number, > 0) -->

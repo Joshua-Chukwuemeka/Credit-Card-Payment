@@ -1,0 +1,31 @@
+<main class="main">
+  <button class="btn btn-primary" [routerLink]="['/payment']">
+    Procede To Payment Page
+  </button>
+  <section class="payment-detail" *ngIf="payment">
+    <div class="payment-detail__list">
+      <span class="payment-detail__name">Amount:</span>
+      <span class="payment-detail__value">
+        {{ payment.amount | currency: "USD" }}</span
+      >
+    </div>
+    <div class="payment-detail__list">
+      <span class="payment-detail__name">Card Number:</span>
+      <span class="payment-detail__value"> {{ payment.cardNumber }}</span>
+    </div>
+    <div class="payment-detail__list">
+      <span class="payment-detail__name">Expires Date:</span>
+      <span class="payment-detail__value">
+        {{ payment.cardExpiry | date: "dd MM yyyy" }}</span
+      >
+    </div>
+    <div class="payment-detail__list">
+      <span class="payment-detail__name">CCV:</span>
+      <span class="payment-detail__value"> {{ payment.cardCcv }}</span>
+    </div>
+    <div class="payment-detail__list">
+      <span class="payment-detail__name">Card Name: </span>
+      <span class="payment-detail__value"> {{ payment.billingName }}</span>
+    </div>
+  </section>
+</main>
